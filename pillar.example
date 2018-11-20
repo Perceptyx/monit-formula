@@ -64,6 +64,16 @@ monit:
           stop: "/etc/init.d/cron stop"
           depends: on cron_rc
 
+    cron_options:
+      process:
+        with:
+          pidfile: /var/run/cron.pid
+        config:
+          group: system
+          start-with-options: '"/etc/init.d/cron start" with timeout 180 seconds'
+          stop-with-options: '"/etc/init.d/cron stop" with timeout 180 seconds'
+          depends: on cron_rc
+
       file:
         custom:
           name: cron_rc

@@ -57,8 +57,10 @@ check {{ mod_name|replace('\\n', '\n') }} {{ name|replace('\\n', '\n') }} with {
         {#- 'config' is the lines containing 'group', 'start program', etc #}
         {%- if 'config' in kind -%}
 
+          {%- if 'start-with-options' in element or 'stop-with-options' in element %}
+  {{ element|replace('\\n', '\n')|replace('-with-options','') }} program = {{ element_v|replace('\\n', '\n') }}
           {#- filter 'start' to add 'program =' into this line #}
-          {%- if 'start' in element or 'stop' in element %}
+          {%- elif 'start' in element or 'stop' in element %}
   {{ element|replace('\\n', '\n') }} program = "{{ element_v|replace('\\n', '\n') }}"
           {%- else %}
   {{ element|replace('\\n', '\n') }} {{ element_v|replace('\\n', '\n') }}
